@@ -1,0 +1,79 @@
+LINE INTERSECTION IN 2D
+
+		Part I - The Proof
+
+n * (p1 - p0) = 0	--> p1 is a position vector to any point on the line
+			--> p0 is a position vector to a known point on the line
+			--> n is the normal or vector that is orthogonal to the line, such that the dot product of n and the line
+				is 0
+
+l = l0 + tv		--> l is a position vector to any point on the line
+			--> l0 is a position vector to a known point on the line
+			--> v is a direction vector that is the slope of the line
+			--> t is a scalar
+
+n * (l - p0) = 0
+
+n * l - n * p0 = 0
+
+n*l = n*p0
+
+n* (l0 + tv) = n*p0
+
+n*l0 + t(n*v) = n*p0
+
+t(n*v) = n*p0 - n*l0
+
+t = n*p0 - n*l0 / n*v
+
+
+	position vector to intersection = l0 + tv		
+
+
+--> For computing a normal to a line segment :
+		--> negative reciprocal slope :
+			n.Xcomponent = -l.Ycomponent
+			n.Ycomponent = l.Xcomponent		
+
+
+		Part II - Code and Discussion
+
+You might have noticed that the above proof for the intersection of a line and another line in 2D, is exactly the same as the 
+proof for that of a line and a plane in 3D, such that the implementation is identical almost to the very letter of code :
+
+public static Point findIntersection(Ray r, LineSegment l)    
+    {
+        Vector l0 = new Vector(l.endpoint1);
+        Vector v0 = new Vector(r.origin);    
+        double denominator = Vector.dotProduct(r.slope, l.normal);
+        if (denominator == 0) return null;       // special logic for reporting colors of parallel lines could go here if we want
+        
+        double numerator = Vector.dotProduct(l0, l.normal) - Vector.dotProduct(v0, l.normal);
+        double t = numerator / denominator;
+        if (t < 0) return null;
+        
+        Point intersection = new Point( Vector.sum(v0, Vector.scalarMultiple(v, t)) );
+        
+        return intersection;
+    }
+
+Why is that? Well it turns out, and I was able to visualize this while sitting awake one night, that the vector forms of the 
+equations of the line and the plane in 3D, in 2D become simply the equations for two lines. I invite you to try to visualize
+that on your own.
+
+This pertains to an idea in linear algebra :
+
+The intersection of any smaller dimensional subspace with a larger dimensional subspace is equivalent to the intersection of the 
+smaller dimensional subspace with the projection onto it of the higher dimensional subspace, which is going to be equal in 
+dimensions to the smaller one.
+
+And the intersection occurs in the subspace spanned by the lower dimensional subspace and its projection onto the higher 
+dimensional subspace
+
+So you always solve a linear algebra problem of dimension (smaller + 1) regardless of how many higher dimensions there are
+
+(Credit : John B.C. DeCelles, my brother)
+
+
+--> This is around when I realized that KermoEngine3D and DOOM18 are versions of the same app, with Kermo extended from R^2 to R^3
+

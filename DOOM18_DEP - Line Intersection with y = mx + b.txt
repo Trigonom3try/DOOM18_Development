@@ -1,0 +1,23 @@
+y1 = m1x1 + b1
+y2 = m2x2 + b2
+
+b1 = y1 - m1x1
+b2 = y2 - m2x2
+
+
+m1x + b1 = m2x + b2
+
+m1x - m2x = b2 - b1
+
+x(m1 - m2) = b2 - b1
+
+x = b2 - b1 / m1 - m2
+
+
+y1 = m1x + b1
+y2 = m2x + b2
+
+--> if y1 == y2, then the point (x, y1) is on both lines
+
+
+
